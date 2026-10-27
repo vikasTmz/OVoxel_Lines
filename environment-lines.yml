@@ -1,0 +1,11 @@
+name: ovoxel-lines
+channels:
+  - defaults
+dependencies:
+  - python=3.13
+  - pip
+  - setuptools>=64
+  - wheel
+  - pip:
+      - numpy>=1.23
+      - cadquery-ocp-novtk==8.0.1.1.0

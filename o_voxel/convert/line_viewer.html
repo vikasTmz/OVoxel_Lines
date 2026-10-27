@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Curve O-Voxels · Inspector</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6fa;color:#172437;font:14px system-ui,sans-serif;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}
+aside{position:absolute;top:22px;left:22px;width:280px;padding:23px;background:#fffffff0;border:1px solid #dbe2eb;border-radius:15px;box-shadow:0 10px 35px #1731490b}
+.eyebrow{color:#60738a;font-size:10px;letter-spacing:2px;font-weight:700}h1{font-size:25px;letter-spacing:-1px;margin:7px 0 6px}p{line-height:1.55;color:#64748b;margin:0 0 18px;font-size:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:19px 0;padding:16px 0;border-block:1px solid #e7ebf1}.stats b{font-size:21px;display:block}.stats span{font-size:11px;color:#718096}
+label{display:flex;align-items:center;gap:9px;padding:5px 0;font-size:12px}input[type=checkbox]{accent-color:#0c8c85}i{width:9px;height:9px;border-radius:3px;display:inline-block}
+hr{border:0;border-top:1px solid #e7ebf1;margin:16px 0}select,button{font:inherit;color:#30465e;border:1px solid #dbe2eb;border-radius:6px;background:white;padding:5px 9px}button{cursor:pointer}
+input[type=range]{width:100%;accent-color:#0c8c85}#selected{font:11px ui-monospace,monospace;white-space:pre-line;color:#435770;line-height:1.6;margin-top:14px;min-height:52px}
+footer{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);padding:9px 17px;border-radius:30px;background:#ffffffe0;color:#62738a;font-size:11px;white-space:nowrap;border:1px solid #e1e7ee}
+@media(max-width:650px){aside{width:220px;left:10px;top:10px;padding:14px}.stats{margin:10px 0;padding:8px 0}footer{left:auto;right:10px;transform:none;font-size:9px}}
+</style>
+<canvas id="view" aria-label="Interactive 3D curve O-Voxel inspector"></canvas>
+<aside>
+<div class="eyebrow">FLEXIBLE DUAL GRID / CURVES</div>
+<h1>Inside the voxels</h1>
+<p>Inspect the curve, its fitted dual vertices, and the grid faces it meets.</p>
+<div class="stats"><div><b id="cells"></b><span>active voxels</span></div><div><b id="duals"></b><span>dual vertices</span></div></div>
+<label><input id="reconstruction" type="checkbox" checked><i style="background:#244b83"></i> Reconstructed lines</label>
+<label><input id="points" type="checkbox" checked><i style="background:#049c8f"></i> Dual vertices</label>
+<label><input id="anchors" type="checkbox" checked><i style="background:#e34e70"></i> Endpoints / junctions</label>
+<label><input id="faces" type="checkbox" checked><i style="background:#ecab35"></i> Intersected faces</label>
+<label><input id="voxels" type="checkbox" checked><i style="background:#8da1b9"></i> Active voxels</label>
+<label><input id="input" type="checkbox"><i style="background:#ae70d4"></i> Input CAD boundaries</label>
+<label><input id="crossings" type="checkbox"><i style="background:#d77d0d"></i> Grid crossing points</label>
+<hr>
+<label><input id="slice" type="checkbox"> Show one voxel layer <select id="axis" aria-label="Slice axis"><option value="0">X</option><option value="1">Y</option><option value="2" selected>Z</option></select></label>
+<input type="range" id="layer" min="0" max="63" value="32" aria-label="Voxel layer">
+<div style="display:flex;align-items:center;justify-content:space-between"><span id="layertext" style="font-size:11px;color:#718096"></span><button id="reset">Reset view</button></div>
+<div id="selected">Click a dual vertex to inspect its voxel.</div>
+</aside>
+<footer>Drag to orbit · Scroll to zoom · Shift-drag to pan · Click to inspect</footer>
+<script>
+"use strict";
+const data=/*__DATA__*/;
+const $=id=>document.getElementById(id), canvas=$('view'), ctx=canvas.getContext('2d');
+$('cells').textContent=data.coords.length.toLocaleString();$('duals').textContent=data.dual_count.toLocaleString();
+const center=data.aabb[0].map((v,i)=>(v+data.aabb[1][i])/2),span=Math.max(...data.aabb[1].map((v,i)=>v-data.aabb[0][i]));
+const step=data.size.map((s,i)=>(data.aabb[1][i]-data.aabb[0][i])/s);
+const corners=[[0,0,0],[1,0,0],[1,1,0],[0,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1]];
+const cubeEdges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+const cubeFaces=[[0,3,7,4],[1,2,6,5],[0,1,5,4],[3,2,6,7],[0,1,2,3],[4,5,6,7]];
+const cellFlags=data.coords.map(()=>Array(6).fill(false));
+data.flags.forEach((flags,i)=>flags.forEach((f,j)=>cellFlags[data.membership[i]][j]||=f));
+const cubeWorld=data.coords.map(c=>corners.map(p=>p.map((v,i)=>data.aabb[0][i]+(c[i]+v)*step[i])));
+let yaw=-.6,pitch=.15,zoom=1,pan=[0,0],selected=-1,projected=[],width=0,height=0,pending=false;
+function project(v){let x=(v[0]-center[0])/span,y=(v[1]-center[1])/span,z=(v[2]-center[2])/span;
+ const xx=Math.cos(yaw)*x+Math.sin(yaw)*z,zz=-Math.sin(yaw)*x+Math.cos(yaw)*z;
+ const yy=Math.cos(pitch)*y-Math.sin(pitch)*zz,depth=Math.sin(pitch)*y+Math.cos(pitch)*zz;
+ const scale=Math.min(width-(width>650?270:80),height)*.86*zoom;
+ return [width/2+(width>650?120:70)+pan[0]+xx*scale,height/2+pan[1]-yy*scale,depth];}
+function visibleCell(index){return !$('slice').checked||data.coords[index][+$('axis').value]===+$('layer').value;}
+function visiblePoint(p){if(!$('slice').checked)return true;const a=+$('axis').value;return Math.min(data.size[a]-1,Math.floor((p[a]-data.aabb[0][a])/step[a]))===+$('layer').value;}
+function line(a,b){ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);}
+function dot(p,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill();}
+function draw(){pending=false;const dpr=window.devicePixelRatio||1;width=innerWidth;height=innerHeight;
+ if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
+ projected=data.vertices.map(project);const cubes=cubeWorld.map(c=>c.map(project));
+ if($('faces').checked){ctx.fillStyle='rgba(232,169,53,.10)';cubes.forEach((cube,i)=>{if(!visibleCell(i))return;cellFlags[i].forEach((f,j)=>{if(!f)return;ctx.beginPath();cubeFaces[j].forEach((v,k)=>k?ctx.lineTo(cube[v][0],cube[v][1]):ctx.moveTo(cube[v][0],cube[v][1]));ctx.closePath();ctx.fill();});});}
+ if($('voxels').checked){ctx.strokeStyle='rgba(98,125,158,.15)';ctx.lineWidth=.6;ctx.beginPath();cubes.forEach((cube,i)=>{if(visibleCell(i))cubeEdges.forEach(([a,b])=>line(cube[a],cube[b]));});ctx.stroke();}
+ if($('input').checked){const p=data.input_vertices.map(project);ctx.strokeStyle='#ae70d4';ctx.lineWidth=1;ctx.beginPath();data.input_segments.forEach(([a,b])=>{if(visiblePoint(data.input_vertices[a])||visiblePoint(data.input_vertices[b]))line(p[a],p[b]);});ctx.stroke();}
+ if($('reconstruction').checked){ctx.strokeStyle='#244b83';ctx.lineWidth=1.4;ctx.beginPath();data.segments.forEach(([a,b])=>{if(visiblePoint(data.vertices[a])||visiblePoint(data.vertices[b]))line(projected[a],projected[b]);});ctx.stroke();}
+ if($('crossings').checked)data.crossings.forEach((p,i)=>{if(data.axes[i].some(Boolean)&&visiblePoint(p))dot(project(p),2.5,'#d77d0d');});
+ if($('points').checked)projected.slice(0,data.dual_count).forEach((p,i)=>{if(visibleCell(data.membership[i]))dot(p,Math.min(4,1.7*Math.sqrt(zoom)),'#049c8f');});
+ if($('anchors').checked)projected.slice(data.dual_count).forEach((p,i)=>{if(visiblePoint(data.vertices[i+data.dual_count]))dot(p,3.4,'#e34e70');});
+ if(selected>=0){const i=data.membership[selected];ctx.strokeStyle='#ed970c';ctx.lineWidth=2;ctx.beginPath();cubeEdges.forEach(([a,b])=>line(cubes[i][a],cubes[i][b]));ctx.stroke();dot(projected[selected],5,'#ed970c');}
+ // Screen-space orientation triad.
+ const o=project(center),base=[width-65,height-70],labels=['X','Y','Z'],colors=['#d7606d','#459875','#537cb7'];
+ labels.forEach((label,i)=>{const v=center.slice();v[i]+=span*.07;const p=project(v);ctx.strokeStyle=colors[i];ctx.lineWidth=2;ctx.beginPath();line(base,[base[0]+(p[0]-o[0])/zoom,base[1]+(p[1]-o[1])/zoom]);ctx.stroke();ctx.fillStyle=colors[i];ctx.fillText(label,base[0]+(p[0]-o[0])/zoom+4,base[1]+(p[1]-o[1])/zoom+3);});}
+function requestDraw(){if(!pending){pending=true;requestAnimationFrame(draw);}}
+function updateLayer(){const axis=+$('axis').value;$('layer').max=data.size[axis]-1;$('layer').value=Math.min(+$('layer').value,data.size[axis]-1);$('layertext').textContent=`Layer ${$('layer').value} / ${data.size[axis]-1}`;requestDraw();}
+document.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateLayer));
+$('reset').onclick=()=>{yaw=-.6;pitch=.15;zoom=1;pan=[0,0];selected=-1;$('selected').textContent='Click a dual vertex to inspect its voxel.';requestDraw();};
+let drag=null;canvas.onpointerdown=e=>{canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY};};
+canvas.onpointermove=e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(e.shiftKey){pan[0]+=dx;pan[1]+=dy;}else{yaw+=dx*.006;pitch=Math.max(-1.5,Math.min(1.5,pitch+dy*.006));}drag.x=e.clientX;drag.y=e.clientY;requestDraw();};
+canvas.onpointerup=e=>{if(!drag)return;if(Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)<4){let best=144;selected=-1;projected.slice(0,data.dual_count).forEach((p,i)=>{if(!visibleCell(data.membership[i]))return;const d=(p[0]-e.clientX)**2+(p[1]-e.clientY)**2;if(d<best){best=d;selected=i;}});$('selected').textContent=selected<0?'Click a dual vertex to inspect its voxel.':`Dual ${selected} · voxel [${data.coords[data.membership[selected]].join(', ')}]\nLocal [${data.local[selected].map(x=>x.toFixed(3)).join(', ')}]\nFaces ${data.flags[selected].map((v,i)=>v?['−X','+X','−Y','+Y','−Z','+Z'][i]:'').filter(Boolean).join(' ')||'none (interior)'}`;}drag=null;requestDraw();};
+canvas.onwheel=e=>{e.preventDefault();zoom=Math.max(.2,Math.min(30,zoom*Math.exp(-e.deltaY*.001)));requestDraw();};window.onresize=requestDraw;
+updateLayer();
+</script>
+</html>

@@ -1,0 +1,35 @@
+[build-system]
+requires = [
+    "setuptools>=64",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "o_voxel"
+version = "0.0.1"
+description = "All about voxel."
+requires-python = ">=3.9"
+authors = [
+    { name = "Jianfeng Xiang", email = "belljig@outlook.com" }
+]
+dependencies = [
+    "numpy>=1.23",
+]
+
+[project.optional-dependencies]
+cad = ["cadquery-ocp-novtk>=7.8,<9; python_version >= '3.11'"]
+mesh = [
+    "torch",
+    "plyfile",
+    "trimesh",
+    "tqdm",
+    "zstandard",
+    "easydict",
+    "cumesh @ git+https://github.com/JeffreyXiang/CuMesh.git",
+    "flex_gemm @ git+https://github.com/JeffreyXiang/FlexGEMM.git",
+]
+
+[tool.setuptools.package-data]
+"o_voxel.convert" = ["line_viewer.html"]

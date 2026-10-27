@@ -1,0 +1,296 @@
+{
+    "tree": {
+        "root": {}
+    },
+    "root": {
+        "component": "f709db76-05f7-11ec-be0b-02af3d83c7bf",
+        "bodies": {
+            "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf": {
+                "is_visible": true
+            },
+            "f6f0d542-05f7-11ec-8878-02af3d83c7bf": {
+                "is_visible": true
+            },
+            "f6f3945c-05f7-11ec-970a-02af3d83c7bf": {
+                "is_visible": true
+            },
+            "f6f65380-05f7-11ec-8311-02af3d83c7bf": {
+                "is_visible": true
+            },
+            "f6f8c486-05f7-11ec-9a39-02af3d83c7bf": {
+                "is_visible": true
+            }
+        }
+    },
+    "occurrences": {},
+    "components": {
+        "f709db76-05f7-11ec-be0b-02af3d83c7bf": {
+            "name": "root",
+            "type": "Component",
+            "part_number": "Untitled",
+            "bodies": [
+                "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf",
+                "f6f0d542-05f7-11ec-8878-02af3d83c7bf",
+                "f6f3945c-05f7-11ec-970a-02af3d83c7bf",
+                "f6f65380-05f7-11ec-8311-02af3d83c7bf",
+                "f6f8c486-05f7-11ec-9a39-02af3d83c7bf"
+            ]
+        }
+    },
+    "bodies": {
+        "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf": {
+            "name": "Body1",
+            "type": "BRepBody",
+            "png": "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf.png",
+            "smt": "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf.smt",
+            "step": "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf.step",
+            "obj": "f6edc7fa-05f7-11ec-b3a0-02af3d83c7bf.obj",
+            "physical_properties": {
+                "center_of_mass": {
+                    "type": "Point3D",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "area": 345.7089770449643,
+                "volume": 0.0,
+                "density": 0,
+                "mass": 0.0
+            },
+            "appearance": {
+                "id": "Prism-167",
+                "name": "Glass - Medium Color (Blue)"
+            },
+            "material": {
+                "appearance": {
+                    "id": "PrismMaterial-018_physmat_aspects:Prism-256",
+                    "name": "Steel - Satin"
+                },
+                "id": "PrismMaterial-018",
+                "name": "Steel"
+            }
+        },
+        "f6f0d542-05f7-11ec-8878-02af3d83c7bf": {
+            "name": "Body2",
+            "type": "BRepBody",
+            "png": "f6f0d542-05f7-11ec-8878-02af3d83c7bf.png",
+            "smt": "f6f0d542-05f7-11ec-8878-02af3d83c7bf.smt",
+            "step": "f6f0d542-05f7-11ec-8878-02af3d83c7bf.step",
+            "obj": "f6f0d542-05f7-11ec-8878-02af3d83c7bf.obj",
+            "physical_properties": {
+                "center_of_mass": {
+                    "type": "Point3D",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "area": 321.5584904007276,
+                "volume": 0.0,
+                "density": 0,
+                "mass": 0.0
+            },
+            "appearance": {
+                "id": "Prism-006",
+                "name": "Paint - Metallic (Red)"
+            },
+            "material": {
+                "appearance": {
+                    "id": "PrismMaterial-018_physmat_aspects:Prism-256",
+                    "name": "Steel - Satin"
+                },
+                "id": "PrismMaterial-018",
+                "name": "Steel"
+            }
+        },
+        "f6f3945c-05f7-11ec-970a-02af3d83c7bf": {
+            "name": "Body3",
+            "type": "BRepBody",
+            "png": "f6f3945c-05f7-11ec-970a-02af3d83c7bf.png",
+            "smt": "f6f3945c-05f7-11ec-970a-02af3d83c7bf.smt",
+            "step": "f6f3945c-05f7-11ec-970a-02af3d83c7bf.step",
+            "obj": "f6f3945c-05f7-11ec-970a-02af3d83c7bf.obj",
+            "physical_properties": {
+                "center_of_mass": {
+                    "type": "Point3D",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "area": 1752.5103570377346,
+                "volume": 0.0,
+                "density": 0,
+                "mass": 0.0
+            },
+            "appearance": {
+                "id": "Prism-006",
+                "name": "Paint - Metallic (Red)"
+            },
+            "material": {
+                "appearance": {
+                    "id": "PrismMaterial-018_physmat_aspects:Prism-256",
+                    "name": "Steel - Satin"
+                },
+                "id": "PrismMaterial-018",
+                "name": "Steel"
+            }
+        },
+        "f6f65380-05f7-11ec-8311-02af3d83c7bf": {
+            "name": "Body4",
+            "type": "BRepBody",
+            "png": "f6f65380-05f7-11ec-8311-02af3d83c7bf.png",
+            "smt": "f6f65380-05f7-11ec-8311-02af3d83c7bf.smt",
+            "step": "f6f65380-05f7-11ec-8311-02af3d83c7bf.step",
+            "obj": "f6f65380-05f7-11ec-8311-02af3d83c7bf.obj",
+            "physical_properties": {
+                "center_of_mass": {
+                    "type": "Point3D",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "area": 1572.0841440199533,
+                "volume": 0.0,
+                "density": 0,
+                "mass": 0.0
+            },
+            "appearance": {
+                "id": "Prism-006",
+                "name": "Paint - Metallic (Red)"
+            },
+            "material": {
+                "appearance": {
+                    "id": "PrismMaterial-018_physmat_aspects:Prism-256",
+                    "name": "Steel - Satin"
+                },
+                "id": "PrismMaterial-018",
+                "name": "Steel"
+            }
+        },
+        "f6f8c486-05f7-11ec-9a39-02af3d83c7bf": {
+            "name": "Body5",
+            "type": "BRepBody",
+            "png": "f6f8c486-05f7-11ec-9a39-02af3d83c7bf.png",
+            "smt": "f6f8c486-05f7-11ec-9a39-02af3d83c7bf.smt",
+            "step": "f6f8c486-05f7-11ec-9a39-02af3d83c7bf.step",
+            "obj": "f6f8c486-05f7-11ec-9a39-02af3d83c7bf.obj",
+            "physical_properties": {
+                "center_of_mass": {
+                    "type": "Point3D",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "area": 73.43296982974357,
+                "volume": 0.0,
+                "density": 0,
+                "mass": 0.0
+            },
+            "appearance": {
+                "id": "Prism-006",
+                "name": "Paint - Metallic (Red)"
+            },
+            "material": {
+                "appearance": {
+                    "id": "PrismMaterial-018_physmat_aspects:Prism-256",
+                    "name": "Steel - Satin"
+                },
+                "id": "PrismMaterial-018",
+                "name": "Steel"
+            }
+        }
+    },
+    "contacts": null,
+    "properties": {
+        "name": "Untitled",
+        "bounding_box": {
+            "type": "BoundingBox3D",
+            "max_point": {
+                "type": "Point3D",
+                "x": 12.75635383531619,
+                "y": 23.74655097688764,
+                "z": 16.794525253191445
+            },
+            "min_point": {
+                "type": "Point3D",
+                "x": -12.756353835316268,
+                "y": 0.08919190763239232,
+                "z": -16.69183611869193
+            }
+        },
+        "vertex_count": 34,
+        "edge_count": 51,
+        "face_count": 19,
+        "loop_count": 19,
+        "shell_count": 5,
+        "body_count": 5,
+        "area": 4065.2949383331234,
+        "volume": 0.0,
+        "mass": 0.0,
+        "center_of_mass": {
+            "type": "Point3D",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "principal_axes": {
+            "x_axis": {
+                "type": "Vector3D",
+                "x": 1.0,
+                "y": 0.0,
+                "z": 0.0,
+                "length": 1.0
+            },
+            "y_axis": {
+                "type": "Vector3D",
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "length": 1.0
+            },
+            "z_axis": {
+                "type": "Vector3D",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0,
+                "length": 1.0
+            }
+        },
+        "xyz_moments_of_inertia": {
+            "xx": 0.0,
+            "yy": 0.0,
+            "zz": 0.0,
+            "xy": 0.0,
+            "yz": 0.0,
+            "xz": 0.0
+        },
+        "surface_types": [
+            {
+                "surface_type": "NurbsSurfaceType",
+                "face_count": 19
+            }
+        ],
+        "vertex_valence": [
+            {
+                "valence": 3,
+                "count": 32
+            },
+            {
+                "valence": 2,
+                "count": 2
+            }
+        ],
+        "design_type": "ParametricDesignType",
+        "likes_count": 1,
+        "comments_count": 0,
+        "views_count": 496,
+        "products": [
+            "Fusion 360"
+        ],
+        "categories": [
+            "Automotive"
+        ],
+        "industries": [
+            "Product Design & Manufacturing"
+        ]
+    }
+}
