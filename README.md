@@ -1,8 +1,8 @@
-# O-Voxel: A Native 3D Representation
+# O-Voxel for Line Segments
 
-**O-Voxel** is a sparse, voxel-based native 3D representation designed for high-quality 3D generation and reconstruction. Unlike traditional methods that rely on fields (e.g., Occupancy fields, SDFs), O-Voxel utilizes a **Flexible Dual Grid** formulation to robustly represent surfaces with arbitrary topology (including non-manifold and open surfaces).
+**O-Voxel** is a sparse, voxel-based native 3D representation designed for high-quality 3D generation and reconstruction. Originally proposed in [Trellis.2](https://github.com/microsoft/TRELLIS.2/), O-Voxel utilizes a **Flexible Dual Grid** formulation to robustly represent surfaces with arbitrary topology (including non-manifold and open surfaces).
 
-This library provides an efficient implementation for the instant bidirectional conversion between Line Graphs and O-Voxels on the CPU, along with tools for sparse voxel compression, serialization, and rendering. It extends the dual-grid idea to curves with a new line-distance QEF, face intersections, explicit connectivity, and endpoint/junction anchors. This is a separate curve representation, not a mesh `.vxz` file or an upstream TRELLIS.2 model format.
+This fork extends the [original library](https://github.com/microsoft/TRELLIS.2/tree/main/o-voxel), providing an efficient implementation for the instant bidirectional conversion between Line Graphs and O-Voxels on the CPU, along with tools for sparse voxel compression, serialization, and rendering. It extends the dual-grid idea to curves with a new line-distance QEF, face intersections, explicit connectivity, and endpoint/junction anchors.
 
 <p float="left">
   <img src="assets/preview_1.png" width="42.5%" />
